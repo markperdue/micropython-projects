@@ -1,6 +1,7 @@
-Built using code and libraries from the following projects
+Built using code and libraries from the following projects:
 
-https://github.com/micropython/micropython-lib/tree/master/umqtt.simple
+- https://github.com/micropython/micropython-lib/tree/master/umqtt.simple
+
 The MIT License (MIT)
 
 Copyright (c) 2013, 2014 Damien P. George
