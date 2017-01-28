@@ -1,7 +1,8 @@
 import machine
 import network
-import time
+from time import sleep, time
 import ubinascii
+import usocket as socket
 from simple import MQTTClient
 
 # These defaults are overwritten with the contents of /config.json by load_config()
@@ -12,13 +13,16 @@ CONFIG = {
     "broker_username": "broker_username_here",
     "broker_password": "broker_password_here",
     "topic": b"topic_here",
-    "client_id": b"esp8266_" + ubinascii.hexlify(machine.unique_id())
+    "client_id": b"esp8266_" + ubinascii.hexlify(machine.unique_id()),
+    "wlan_check_interval": 30
 }
 
 led = machine.Pin(14, machine.Pin.OUT)
 button = machine.Pin(12, machine.Pin.IN)
 wlan = network.WLAN(network.STA_IF)
+wlan_last_checked = None
 client = None
+client_connected = False
 
 def mqtt_callback(topic, msg):
     print((topic, msg))
@@ -49,11 +53,18 @@ def do_connect_mqtt():
     client.set_callback(mqtt_callback)
     print("Connecting to MQTT broker %s..." % (CONFIG['broker']))
 
-    client.connect()
-    print('Connected to MQTT broker %s' % (CONFIG['broker']))
+    global client_connected
 
-    client.subscribe(CONFIG['topic'])
-    print('Subscribed to MQTT topic %s' % (CONFIG['topic']))
+    try:
+        client.connect()
+        client_connected = True
+    except OSError:
+        client_connected = False
+    else:
+        print('Connected to MQTT broker %s' % (CONFIG['broker']))
+
+        client.subscribe(CONFIG['topic'])
+        print('Subscribed to MQTT topic %s' % (CONFIG['topic']))
 
 def load_config():
     import ujson as json
@@ -76,14 +87,21 @@ def save_config():
         print("Couldn't save /config.json")
 
 def keep_connected():
-    if not wlan.isconnected():
+    print('Verifying connections are still active...')
+
+    global wlan_last_checked
+    wlan_last_checked = time()
+
+    global wlan
+    global client_connected
+    if not wlan.isconnected() or not client_connected:
         do_connect()
 
 def main():
     load_config()
-    do_connect()
+    keep_connected()
 
-    prev_input = 0
+    prev_input = 1  # Set start to 1 for ESP8266
 
     while True:
         current_value = button.value()
@@ -93,9 +111,19 @@ def main():
 
         prev_input = current_value
 
+        global wlan_last_checked
+        if (time() - wlan_last_checked) > CONFIG['wlan_check_interval']:
+            keep_connected()
+
         global client
-        client.check_msg()
-        time.sleep(0.25)
+        if client is not None:
+            try:
+                client.check_msg()
+            except OSError:
+                global client_connected
+                client_connected = False
+
+        sleep(0.25)
 
 
 if __name__ == '__main__':
