@@ -1,1 +1,1 @@
-{"ssid": "ssid_here", "password": "password_here", "broker": "broker_here", "broker_username": "broker_username_here", "broker_password": "broker_password_here", "topic": "topic_here"}
+{"ssid": "ssid_here", "password": "password_here", "wlan_check_interval": 30, "mqtt": {"broker": "broker_here", "user": "user_here", "password": "password_here", "topic": "topic_here", "client_id": "client_id_here"}}
