@@ -11,7 +11,7 @@
 In the above example the negative lead of the LED is plugged into 23b and the positive lead is plugged into 22b
 2. Setup the breadboard with a jumper pin connecting GND on the ESP8266 to the ground rail on the breadboard
 3. Connect a jumper pin from the ground rail to the LED
-4. Connect a resistor from pin D2 on the ESP8266 to the positive lead of the LED
+4. Connect a resistor from pin D2 on the ESP8266 to the positive lead of the LED. It does not matter which way you plug in the resistor.
 5. The finished design should look like the following:
 ![alt text](images/IMG_6718.JPG "ESP8266 Layout")
 
@@ -32,8 +32,12 @@ led.high()
 
 ### Let's walk through what is going on in step 2.
 `import machine` provides access to GPIO, the real time clock, Timer classes and a few other things <http://docs.micropython.org/en/latest/esp8266/library/machine.html>
+
 `led = machine.Pin(4, machine.Pin.OUT)` will setup an output pin on GPIO4 which happens to map to D2 on the NodeMCU v2. ESP8266 pin labels do not map exactly to their GPIO counterparts so keep the following chart handy
 ![alt text](images/df994028721a8bdf.png "NodeMCU v2 Pin Layout")
+
 `led.high()` sets the pins value to high
+
 `led.low()` sets the pins value to low
+
 `led.high()` sets the pins value to high
