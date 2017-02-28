@@ -17,10 +17,12 @@ In the above example the negative lead of the LED is plugged into 23b and the po
 
 # Flashing an LED
 1. Get to the python REPL
+
     ```
     screen /dev/tty.SLAB_USBtoUART 115200
     ```
 2. Type the following code
+
     ```
     import machine
     led = machine.Pin(4, machine.Pin.OUT)
