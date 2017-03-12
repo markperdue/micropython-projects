@@ -1,1 +1,16 @@
-{"ssid": "ssid_here", "password": "password_here", "wlan_check_interval": 30, "mqtt": {"broker": "broker_here", "user": "user_here", "password": "password_here", "topic": "topic_here", "client_id": "client_id_here"}}
+{
+  "wifi": {
+    "ssid": "ssid_here",
+    "password": "password_here",
+    "check_interval": 30
+  },
+  "mqtt": {
+    "broker": "192.168.1.10",
+    "user": "user_here",
+    "password": "password_here",
+    "topic": "topic_here",
+    "client_id": "client_id_here",
+    "action": "subscribe",
+    "interval": 30
+  }
+}
