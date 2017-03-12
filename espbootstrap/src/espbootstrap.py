@@ -228,13 +228,14 @@ class ESPBootstrap(object):
             except OSError:
                 self.mqtt_client_connected = False
 
-            if self.mqtt_last_sent_ts is None or (rt - self.mqtt_last_sent_ts > self.mqtt_interval):
-                try:
-                    self.mqtt_pub()
-                except NotImplementedError:
-                    print('Error: No MQTT data callback is implemented')
-                except ValueError:
-                    print('Error: MQTT data callback returned no data to publish')
+            if self.mqtt_action is not None and self.mqtt_action in ['all', 'publish']:
+                if self.mqtt_last_sent_ts is None or (rt - self.mqtt_last_sent_ts > self.mqtt_interval):
+                    try:
+                        self.mqtt_pub()
+                    except NotImplementedError:
+                        print('Error: No MQTT data callback is implemented')
+                    except ValueError:
+                        print('Error: MQTT data callback returned no data to publish')
 
     def check_wifi(self, rt):
         if self.wlan is not None:
