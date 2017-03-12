@@ -1,0 +1,24 @@
+{
+  "wifi": {
+    "ssid": "ssid_here",
+    "password": "password_here",
+    "check_interval": 30
+  },
+  "mqtt": {
+    "broker": "192.168.1.10",
+    "user": "user_here",
+    "password": "password_here",
+    "topic": "topic_here",
+    "client_id": "client_id_here",
+    "action": "publish",
+    "interval": 30,
+    "deep_sleep": true
+  },
+  "access_point": {
+    "ssid": "ssid_here",
+    "channel": 11,
+    "hidden": false,
+    "authmode": 3,
+    "password": "password_here"
+  }
+}
